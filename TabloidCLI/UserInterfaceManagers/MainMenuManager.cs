@@ -9,6 +9,8 @@ namespace TabloidCLI.UserInterfaceManagers
 
         public IUserInterfaceManager Execute()
         {
+
+            Console.WriteLine();
             Console.WriteLine("Main Menu");
 
             Console.WriteLine(" 1) Journal Management");
@@ -20,11 +22,17 @@ namespace TabloidCLI.UserInterfaceManagers
             Console.WriteLine(" 0) Exit");
 
             Console.Write("> ");
+
+            //we will print out a pleasant greeting here
+            string managementQtn = "Hello there! Which one of these managements above do you need help organizing?";
+            Console.WriteLine($"{managementQtn}");
+
             string choice = Console.ReadLine();
             switch (choice)
             {
                 case "1": throw new NotImplementedException();
-                case "2": throw new NotImplementedException();
+                case "2": return new SearchResults(this, CONNECTION_STRING);
+
                 case "3": return new AuthorManager(this, CONNECTION_STRING);
                 case "4": throw new NotImplementedException();
                 case "5": return new TagManager(this, CONNECTION_STRING);

@@ -7,7 +7,7 @@ using TabloidCLI.Repositories;
 namespace TabloidCLI
 {
 
-    public class BlogRepository : DatabaseConnector
+    public class BlogRepository : DatabaseConnector, IRepository<Blog>
     {
 
         public BlogRepository(string connectionString) : base(connectionString) { }
@@ -115,22 +115,6 @@ namespace TabloidCLI
             }
         }
 
-        public void InsertTag(Blog blog, Tag tag)
-        {
-            using (SqlConnection conn = Connection)
-            {
-                conn.Open();
-                using (SqlCommand cmd = conn.CreateCommand())
-                {
-                    cmd.CommandText = @"INSERT INTO BlogTag (BlogId, TagId)
-                                                       VALUES (@blogId, @tagId)";
-                    cmd.Parameters.AddWithValue("@blogId", blog.Id);
-                    cmd.Parameters.AddWithValue("@tagId", tag.Id);
-                    cmd.ExecuteNonQuery();
-                }
-            }
-        }
-
         public void Update(Blog blog)
         {
             using (SqlConnection conn = Connection)
@@ -147,6 +131,37 @@ namespace TabloidCLI
                     cmd.Parameters.AddWithValue("@url", blog.Url);
                     cmd.Parameters.AddWithValue("@id", blog.Id);
 
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void Delete(int id)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"DELETE FROM Blog WHERE id = @id";
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void InsertTag(Blog blog, Tag tag)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"INSERT INTO BlogTag (BlogId, TagId)
+                                                       VALUES (@blogId, @tagId)";
+                    cmd.Parameters.AddWithValue("@blogId", blog.Id);
+                    cmd.Parameters.AddWithValue("@tagId", tag.Id);
                     cmd.ExecuteNonQuery();
                 }
             }

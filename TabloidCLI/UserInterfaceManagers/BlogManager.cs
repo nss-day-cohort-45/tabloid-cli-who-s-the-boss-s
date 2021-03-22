@@ -10,7 +10,6 @@ namespace TabloidCLI.UserInterfaceManagers
         private readonly IUserInterfaceManager _parentUI;
         private BlogRepository _blogRepository;
         private string _connectionString;
-        private object _authorRepository;
 
         public BlogManager(IUserInterfaceManager parentUI, string connectionString)
         {
@@ -49,12 +48,6 @@ namespace TabloidCLI.UserInterfaceManagers
                 case "3":
                     Add();
                     return this;
-                case "4":
-                    Edit();
-                    return this;
-                case "5":
-                    Remove();
-                    return this;
                 case "0":
                     return _parentUI;
                 default:
@@ -65,7 +58,7 @@ namespace TabloidCLI.UserInterfaceManagers
 
         private void List()
         {
-            List<Blog> authors = _authorRepository.GetAll();
+            List<Blog> blogs = _blogRepository.GetAll();
             foreach (Blog blog in blogs)
             {
                 Console.WriteLine(blog);
@@ -85,8 +78,8 @@ namespace TabloidCLI.UserInterfaceManagers
 
             for (int i = 0; i < blogs.Count; i++)
             {
-                Author author = blogs[i];
-                Console.WriteLine($" {i + 1}) {blog.FullName}");
+                Blog blog = blogs[i];
+                Console.WriteLine($" {i + 1}) {blog.Title}");
             }
             Console.Write("> ");
 
@@ -105,59 +98,21 @@ namespace TabloidCLI.UserInterfaceManagers
 
         private void Add()
         {
-            Console.WriteLine("New Author");
-            Author author = new Author();
+            Console.WriteLine("New Blog");
+            Blog blog = new Blog();
 
-            Console.Write("First Name: ");
-            author.FirstName = Console.ReadLine();
+            Console.Write("Blog Title: ");
+            blog.Title = Console.ReadLine();
 
-            Console.Write("Last Name: ");
-            author.LastName = Console.ReadLine();
+            Console.Write("Url: ");
+            blog.Url = Console.ReadLine();
 
-            Console.Write("Bio: ");
-            author.Bio = Console.ReadLine();
 
-            _blogRepository.Insert(author);
+            _blogRepository.Insert(blog);
         }
 
-        private void Edit()
-        {
-            Author blogToEdit = Choose("Which blog would you like to edit?");
-            if (blogToEdit == null)
-            {
-                return;
-            }
+        
 
-            Console.WriteLine();
-            Console.Write("New first name (blank to leave unchanged: ");
-            string firstName = Console.ReadLine();
-            if (!string.IsNullOrWhiteSpace(firstName))
-            {
-                blogToEdit.FirstName = firstName;
-            }
-            Console.Write("New last name (blank to leave unchanged: ");
-            string lastName = Console.ReadLine();
-            if (!string.IsNullOrWhiteSpace(lastName))
-            {
-                blogToEdit.LastName = lastName;
-            }
-            Console.Write("New bio (blank to leave unchanged: ");
-            string bio = Console.ReadLine();
-            if (!string.IsNullOrWhiteSpace(bio))
-            {
-                blogToEdit.Bio = bio;
-            }
-
-            _blogRepository.Update(blogToEdit);
-        }
-
-        private void Remove()
-        {
-            Author blogToDelete = Choose("Which blog would you like to remove?");
-            if (blogToDelete != null)
-            {
-                _blogRepository.Delete(blogToDelete.Id);
-            }
-        }
+        
     }
 }

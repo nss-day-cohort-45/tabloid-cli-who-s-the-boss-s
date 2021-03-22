@@ -1,4 +1,8 @@
-﻿using TabloidCLI.UserInterfaceManagers;
+﻿using Microsoft.Data.SqlClient;
+using TabloidCLI.Models;
+using System.Collections.Generic;
+using TabloidCLI.UserInterfaceManagers;
+using System;
 
 namespace TabloidCLI
 {
@@ -6,6 +10,8 @@ namespace TabloidCLI
     {
         static void Main(string[] args)
         {
+          
+
             // MainMenuManager implements the IUserInterfaceManager interface
             IUserInterfaceManager ui = new MainMenuManager();
             while (ui != null)

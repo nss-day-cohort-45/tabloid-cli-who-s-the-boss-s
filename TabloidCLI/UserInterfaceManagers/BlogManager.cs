@@ -21,10 +21,10 @@ namespace TabloidCLI.UserInterfaceManagers
         public IUserInterfaceManager Execute()
         {
             Console.WriteLine("Blog Menu");
-            Console.WriteLine(" 1) List ABlogsuthors");
-            Console.WriteLine(" 2) Blogs Details");
-            Console.WriteLine(" 3) Add Blogs");
-            Console.WriteLine(" 4) Edit Blogs");
+            Console.WriteLine(" 1) List Blog");
+            Console.WriteLine(" 2) Blog Details");
+            Console.WriteLine(" 3) Add Blog");
+            Console.WriteLine(" 4) Edit Blog");
             Console.WriteLine(" 5) Remove Blog");
             Console.WriteLine(" 0) Go Back");
 

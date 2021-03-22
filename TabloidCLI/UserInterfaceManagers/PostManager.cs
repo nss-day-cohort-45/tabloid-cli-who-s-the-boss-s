@@ -215,14 +215,10 @@ namespace TabloidCLI.UserInterfaceManagers
             };
 
             Console.WriteLine("Publication Date (MM/DD/YYYY)");
-            DateTime newDate = DateTime.Parse(Console.ReadLine());
-            if (newDate == null)
+            bool canDate = DateTime.TryParse(Console.ReadLine(), out DateTime result);
+            if (canDate)
             {
-                
-            }
-            else
-            {
-                postToEdit.PublishDateTime = newDate;
+                postToEdit.PublishDateTime = result;
             };
 
             Console.WriteLine("Who is the author of post: ");

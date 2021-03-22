@@ -19,13 +19,13 @@ namespace TabloidCLI.UserInterfaceManagers
 
         public IUserInterfaceManager Execute()
         {
+            Console.WriteLine("---------------------------");
             Console.WriteLine("Journal Menu");
+            Console.WriteLine("---------------------------");
             Console.WriteLine(" 1) List Journal Entries");
+            Console.WriteLine(" 2) Edit  Journal Entries");
             Console.WriteLine(" 3) Add Journal Entry");
-           // Console.WriteLine(" 2) Author Details");
-           // Console.WriteLine(" 4) Edit Author");
-            //Console.WriteLine(" 5) Remove Author");
-            //Console.WriteLine(" 0) Go Back");
+            Console.WriteLine(" 0) Go Back");
 
             Console.Write("> ");
             string choice = Console.ReadLine();
@@ -34,25 +34,12 @@ namespace TabloidCLI.UserInterfaceManagers
                 case "1":
                     List();
                     return this;
-               case "2":
-                    Journal journal = Choose();
-                    if (journal == null)
-                    {
-                        return this;
-                    }
-                    else
-                    {
-                        return new JournalDetailManager(this, _connectionString, journal.Id);
-                    }
                 case "3":
                     Add();
                     return this;
-                //case "4":
-                  //  Edit();
-                    //return this;
-                //case "5":
-                  //  Remove();
-                    //return this;
+                case "2":
+                    Edit();
+                    return this;
                 case "0":
                     return _parentUI;
                 default:
@@ -125,10 +112,34 @@ namespace TabloidCLI.UserInterfaceManagers
 
             _journalRepository.Insert(journal);
         }
-/// <summary>
-/// end at edit
-/// </summary>
-     
+       
+        private void Edit()
+        {
+            Journal journalToEdit = Choose("Which journal entry would you like to edit?");
+            if (journalToEdit == null)
+            {
+                return;
+            }
+
+            Console.WriteLine();
+            Console.Write("Here is the current entry: ");
+            {
+                Console.WriteLine($"{journalToEdit.Content}");
+
+            }
+            Console.WriteLine("Press Enter to escape without editing or change your content now");
+                
+                
+                
+                string content = Console.ReadLine();
+            if (!string.IsNullOrWhiteSpace(content))
+            {
+                journalToEdit.Content = content;
+            }
+            
+            _journalRepository.Update(journalToEdit);
+        }
+
     }
 }
 

@@ -81,14 +81,7 @@ namespace TabloidCLI
                             };
                         }
 
-                    //    if (!reader.IsDBNull(reader.GetOrdinal("TagId")))
-                      //  {
-                        //    journal.Tags.Add(new Tag()
-                          //  {
-                            //    Id = reader.GetInt32(reader.GetOrdinal("TagId")),
-                              //  Name = reader.GetString(reader.GetOrdinal("Name")),
-                           // });
-                        //}
+                
                     }
 
                     reader.Close();
@@ -112,7 +105,23 @@ namespace TabloidCLI
 
         public void Update(Journal journal)
         {
-            throw new NotImplementedException();
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"UPDATE Journal 
+                                           SET content = @content
+                                            WHERE id = @id";
+                                              
+
+                    cmd.Parameters.AddWithValue("@content", journal.Content);
+                    cmd.Parameters.AddWithValue("@id", journal.Id);
+
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
 
 

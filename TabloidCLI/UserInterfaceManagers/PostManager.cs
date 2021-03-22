@@ -188,19 +188,42 @@ namespace TabloidCLI.UserInterfaceManagers
 
             int postToEditIndex = Int32.Parse(Console.ReadLine());
 
-           Post postToEdit = posts[postToEditIndex - 1];
+            Post postToEdit = posts[postToEditIndex - 1];
 
             // Here menu to get updates
 
 
             Console.WriteLine("Title of post: ");
-            postToEdit.Title = Console.ReadLine();
+            string newTitle = Console.ReadLine();
+            if (newTitle == "" || newTitle == null)
+            {
+                
+            } else
+            {
+                postToEdit.Title = newTitle;
+            };
 
             Console.WriteLine("URL of post: ");
-            postToEdit.Url = Console.ReadLine();
+            string newURL = Console.ReadLine();
+            if (newURL == null || newURL == "")
+            {
+               
+            }
+            else
+            {
+                postToEdit.Url = newURL;
+            };
 
             Console.WriteLine("Publication Date (MM/DD/YYYY)");
-            postToEdit.PublishDateTime = DateTime.Parse(Console.ReadLine());
+            DateTime newDate = DateTime.Parse(Console.ReadLine());
+            if (newDate == null)
+            {
+                
+            }
+            else
+            {
+                postToEdit.PublishDateTime = newDate;
+            };
 
             Console.WriteLine("Who is the author of post: ");
             List<Author> authors = _authorRepository.GetAll();

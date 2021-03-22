@@ -158,6 +158,11 @@ namespace TabloidCLI.Repositories
             }
         }
 
+        internal List<Post> GetByAuthor(object authorId)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Insert(Post post)
         {
             throw new NotImplementedException();

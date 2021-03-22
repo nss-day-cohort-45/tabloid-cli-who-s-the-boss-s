@@ -11,6 +11,7 @@ namespace TabloidCLI.UserInterfaceManagers
         private PostRepository _postRepository;
         private AuthorRepository _authorRepository;
         private TagRepository _tagRepository;
+        private BlogRepository _blogRepository;
         private int _postId;
        
 
@@ -20,6 +21,7 @@ namespace TabloidCLI.UserInterfaceManagers
             _postRepository = new PostRepository(connectionString);
             _tagRepository = new TagRepository(connectionString);
             _authorRepository = new AuthorRepository(connectionString);
+            _blogRepository = new BlogRepository(connectionString);
            
         }
 
@@ -113,17 +115,60 @@ namespace TabloidCLI.UserInterfaceManagers
             Console.WriteLine("Title of post: ");
             post.Title = Console.ReadLine();
 
-            Console.WriteLine("Author of post: ");
-            post.Author = null;
-
             Console.WriteLine("URL of post: ");
             post.Url = Console.ReadLine();
 
-            Console.WriteLine("Associated blog post: ");
-            post.Blog = null;
-
             Console.WriteLine("Publication Date (MM/DD/YYYY)");
             post.PublishDateTime = DateTime.Parse(Console.ReadLine());
+
+            Console.WriteLine("Who is the author of post: ");
+            List<Author> authors = _authorRepository.GetAll();
+            for (int i = 0; i < authors.Count; i++)
+            {
+                Author author = authors[i];
+                Console.WriteLine($" {i + 1}) {author.FullName}");
+            }
+            Console.Write("> ");
+
+            string input = Console.ReadLine();
+            try
+            {
+                int choice = int.Parse(input);
+                post.Author =  authors[choice - 1];
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Invalid Selection");
+                
+            }
+
+
+
+            Console.WriteLine("Choose an associated blog post: ");
+            List<Blog> blogs = _blogRepository.GetAll();
+            for (int i = 0; i < blogs.Count; i++)
+            {
+                Blog blog = blogs[i];
+                Console.WriteLine($" {i + 1}) {blog.Title}");
+            }
+            Console.Write("> ");
+
+            string blogInput = Console.ReadLine();
+            try
+            {
+                int choice = int.Parse(blogInput);
+                post.Blog = blogs[choice - 1];
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Invalid Selection");
+
+            }
+
+
+            _postRepository.Insert(post);
+
+
         }
 
         private void Edit()

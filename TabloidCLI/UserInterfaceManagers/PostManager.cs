@@ -43,7 +43,9 @@ namespace TabloidCLI.UserInterfaceManagers
                     return this;
                 case "2":
                     Choose();
-                    return this;
+                   
+                     return this;
+                    
                 case "3":
                     Add();
                     return this;
@@ -68,7 +70,7 @@ namespace TabloidCLI.UserInterfaceManagers
             }
         }
 
-        private Post Choose(string prompt = null)
+        private void Choose(string prompt = null)
         {
             if (prompt == null)
             {
@@ -90,12 +92,13 @@ namespace TabloidCLI.UserInterfaceManagers
             try
             {
                 int choice = int.Parse(input);
-                return posts[choice - 1];
+                Post chosenPost = posts[choice - 1];
+                 Console.WriteLine(chosenPost.Id);
             }
             catch (Exception ex)
             {
                 Console.WriteLine("Invalid Selection");
-                return null;
+                
             }
 
         }
@@ -118,6 +121,9 @@ namespace TabloidCLI.UserInterfaceManagers
 
             Console.WriteLine("Associated blog post: ");
             post.Blog = null;
+
+            Console.WriteLine("Publication Date (MM/DD/YYYY)");
+            post.PublishDateTime = DateTime.Parse(Console.ReadLine());
         }
 
         private void Edit()

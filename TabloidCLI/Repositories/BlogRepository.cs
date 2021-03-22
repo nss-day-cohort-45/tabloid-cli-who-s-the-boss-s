@@ -7,7 +7,7 @@ using TabloidCLI.Repositories;
 namespace TabloidCLI
 {
 
-    public class BlogRepository : DatabaseConnector
+    public class BlogRepository : DatabaseConnector, IRepository<Blog>
     {
 
         public BlogRepository(string connectionString) : base(connectionString) { }
@@ -109,6 +109,26 @@ namespace TabloidCLI
                                                      VALUES (@title, @url)";
                     cmd.Parameters.AddWithValue("@title", blog.Title);
                     cmd.Parameters.AddWithValue("@url", blog.Url);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void Update(Blog blog)
+        {
+            // Build update method here
+        }
+
+        public void Delete(int id)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"DELETE FROM Blog WHERE id = @id";
+                    cmd.Parameters.AddWithValue("@id", id);
 
                     cmd.ExecuteNonQuery();
                 }

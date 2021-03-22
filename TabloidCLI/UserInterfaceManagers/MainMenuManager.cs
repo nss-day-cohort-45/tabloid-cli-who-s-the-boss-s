@@ -10,6 +10,10 @@ namespace TabloidCLI.UserInterfaceManagers
         public IUserInterfaceManager Execute()
         {
 
+            //we will print out a pleasant greeting here
+            string managementQtn = "Hello there! These are a list of managements you can work with. You can add, list tags, edit, or remove one of the posts under one of these managements. Just select one you want to work with and let's get started!";
+            Console.WriteLine($"{managementQtn}");
+
             Console.WriteLine();
             Console.WriteLine("Main Menu");
 
@@ -23,9 +27,6 @@ namespace TabloidCLI.UserInterfaceManagers
 
             Console.Write("> ");
 
-            //we will print out a pleasant greeting here
-            string managementQtn = "Hello there! Which one of these managements above do you need help organizing?";
-            Console.WriteLine($"{managementQtn}");
 
             string choice = Console.ReadLine();
             switch (choice)

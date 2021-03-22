@@ -148,7 +148,20 @@ namespace TabloidCLI.UserInterfaceManagers
             Blog blogToDelete = Choose("Which blog would you like to remove?");
             if (blogToDelete != null)
             {
-                _blogRepository.Delete(blogToDelete.Id);
+                try 
+                {
+                    // Here we try to delete a blog using the Delete method found in BlogRepository.cs
+                    // If there are posts in the database that reference the ID of the  blog we are trying to delete, 
+                    // a `Microsoft.Data.SqlClient.SqlException` error is thrown
+                    _blogRepository.Delete(blogToDelete.Id);
+                }
+                catch (Microsoft.Data.SqlClient.SqlException)
+                {
+                    // If the error would be thrown, the try/catch statement stops the code above from executing
+                    // and instead executes this code
+                    Console.WriteLine("Cannot delete the selected blog while posts exist");
+                }
+                
             }
         }
 

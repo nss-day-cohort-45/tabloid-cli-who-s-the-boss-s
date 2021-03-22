@@ -285,7 +285,7 @@ namespace TabloidCLI.UserInterfaceManagers
 
             int postToDelete = Int32.Parse(Console.ReadLine());
 
-
+            
             _postRepository.Delete(posts[postToDelete - 1].Id);
         }
     }

@@ -14,7 +14,8 @@ namespace TabloidCLI.UserInterfaceManagers
         //private TagRepository _tagRepository;
         private int _journalId;
 
-        public JournalDetailManager(IUserInterfaceManager parentUI, string connectionString, int journalId)
+        public JournalDetailManager(IUserInterfaceManager
+            parentUI, string connectionString, int journalId)
         {
             _parentUI = parentUI;
             _journalRepository = new JournalRepository(connectionString);

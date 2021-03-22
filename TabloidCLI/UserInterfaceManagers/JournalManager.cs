@@ -20,8 +20,8 @@ namespace TabloidCLI.UserInterfaceManagers
         public IUserInterfaceManager Execute()
         {
             Console.WriteLine("Journal Menu");
+            Console.WriteLine(" 1) List Journal Entries");
             Console.WriteLine(" 3) Add Journal Entry");
-          //  Console.WriteLine(" 1) List Authors");
            // Console.WriteLine(" 2) Author Details");
            // Console.WriteLine(" 4) Edit Author");
             //Console.WriteLine(" 5) Remove Author");
@@ -66,7 +66,9 @@ namespace TabloidCLI.UserInterfaceManagers
             List<Journal> journals = _journalRepository.GetAll();
             foreach (Journal journal in journals)
             {
-                Console.WriteLine(journal);
+                Console.WriteLine($"Title: {journal.Title} ");
+                Console.WriteLine($"Date of entry: {journal.CreateDateTime}");
+                Console.WriteLine($"Journal Entry: {journal.Content}");
             }
         }
 
@@ -111,6 +113,13 @@ namespace TabloidCLI.UserInterfaceManagers
 
             Console.Write("Content: ");
             journal.Content = Console.ReadLine();
+            Console.WriteLine($"Your entry has been saved.");
+            Console.Write("Press any key to continue");
+            Console.ReadKey();
+
+
+            DateTime dateTime =  DateTime.Now;
+            journal.CreateDateTime = dateTime;
 
        
 

@@ -26,7 +26,8 @@ namespace TabloidCLI
                 { 
                     cmd.CommandText = @"Select id,
                                             Title,
-                                            Content
+                                            Content,
+                                            CreateDateTime
                                             FROM Journal";
                     SqlDataReader reader = cmd.ExecuteReader();
                     List<Journal> journals = new List<Journal>();
@@ -38,6 +39,7 @@ namespace TabloidCLI
                             Id = reader.GetInt32(reader.GetOrdinal("Id")),
                             Title = reader.GetString(reader.GetOrdinal("Title")),
                             Content = reader.GetString(reader.GetOrdinal("Content")),
+                            CreateDateTime = reader.GetDateTime(reader.GetOrdinal("CreateDateTime"))
                         };
                         journals.Add(journal);
                     }
@@ -56,8 +58,8 @@ namespace TabloidCLI
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"SELECT *
-                                          FROM Journal  
-                                         WHERE id = @id";
+                                          FROM Journal"; 
+                                         //WHERE id = @id";//
 
                     cmd.Parameters.AddWithValue("@id", id);
 
@@ -73,6 +75,9 @@ namespace TabloidCLI
                                 Id = reader.GetInt32(reader.GetOrdinal("Id")),
                                 Title = reader.GetString(reader.GetOrdinal("Title")),
                                 Content = reader.GetString(reader.GetOrdinal("Content")),
+                                CreateDateTime = reader.GetDateTime(reader.GetOrdinal("CreateDateTime"))
+
+
                             };
                         }
 
@@ -119,11 +124,11 @@ namespace TabloidCLI
                 conn.Open();
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @"INSERT INTO Journal (Title, Content )
-                                                     VALUES (@title , @content)";
+                    cmd.CommandText = @"INSERT INTO Journal (Title, Content, CreateDateTime )
+                                                     VALUES (@title , @content, @createdatetime)";
                     cmd.Parameters.AddWithValue("@title", journal.Title);
                     cmd.Parameters.AddWithValue("@content", journal.Content);
-
+                    cmd.Parameters.AddWithValue("@createdatetime", journal.CreateDateTime);
                     cmd.ExecuteNonQuery();
 
                 }

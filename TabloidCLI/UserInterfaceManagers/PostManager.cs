@@ -52,6 +52,9 @@ namespace TabloidCLI.UserInterfaceManagers
                     Add();
                     return this;
                 case "4":
+                    Edit();
+                    return this;
+                case "5":
                     Remove();
                     return this;
                 case "0":
@@ -178,7 +181,19 @@ namespace TabloidCLI.UserInterfaceManagers
 
         private void Remove()
         {
-            Console.WriteLine("not implemented yet");
+            Console.WriteLine("Which post would you like to delete>");
+            List<Post> posts = _postRepository.GetAll();
+
+            for (int i = 0; i < posts.Count; i++)
+            {
+                Post post = posts[i];
+                Console.WriteLine($" {i + 1}) {post.Title}");
+            }
+            Console.Write("> ");
+
+            int postToDelete = Int32.Parse(Console.ReadLine());
+
+            _postRepository.Delete(postToDelete);
         }
 
     }

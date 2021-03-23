@@ -15,7 +15,9 @@ namespace TabloidCLI.UserInterfaceManagers
             Console.WriteLine($"{managementQtn}");
 
             Console.WriteLine();
+            Console.WriteLine("---------------------------");
             Console.WriteLine("Main Menu");
+            Console.WriteLine("---------------------------");
 
             Console.WriteLine(" 1) Journal Management");
             Console.WriteLine(" 2) Blog Management");
@@ -32,13 +34,13 @@ namespace TabloidCLI.UserInterfaceManagers
             string choice = Console.ReadLine();
             switch (choice)
             {
-                case "1": return new JournalManager(this,CONNECTION_STRING);
-                case "2": return new BlogManager(this, CONNECTION_STRING);
-                case "3": return new AuthorManager(this, CONNECTION_STRING);
-                case "4": return new PostManager(this, CONNECTION_STRING);
-                case "5": return new TagManager(this, CONNECTION_STRING);
-                case "6": return new SearchManager(this, CONNECTION_STRING);
-                case "7": return new BackgroundColorManager();
+                case "1": Console.Clear(); return new JournalManager(this,CONNECTION_STRING);
+                case "2": Console.Clear(); return new BlogManager(this, CONNECTION_STRING);
+                case "3": Console.Clear(); return new AuthorManager(this, CONNECTION_STRING);
+                case "4": Console.Clear(); return new PostManager(this, CONNECTION_STRING);
+                case "5": Console.Clear(); return new TagManager(this, CONNECTION_STRING);
+                case "6": Console.Clear(); return new SearchManager(this, CONNECTION_STRING);
+                case "7": Console.Clear(); return new BackgroundColorManager();
                 case "0":
                     Console.WriteLine("Good bye");
                     return null;

@@ -27,7 +27,9 @@ namespace TabloidCLI.UserInterfaceManagers
 
         public IUserInterfaceManager Execute()
         {
+            Console.WriteLine("---------------------------");
             Console.WriteLine("Post Menu");
+            Console.WriteLine("---------------------------");
             Console.WriteLine(" 1) List Posts");
             Console.WriteLine(" 2) Post Details");
             Console.WriteLine(" 3) Add Post");
@@ -58,7 +60,7 @@ namespace TabloidCLI.UserInterfaceManagers
                     Remove();
                     return this;
                 case "0":
-                    return _parentUI;
+                    Console.Clear(); return _parentUI;
                 default:
                     Console.WriteLine("Invalid Selection");
                     return this;

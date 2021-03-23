@@ -25,7 +25,9 @@ namespace TabloidCLI.UserInterfaceManagers
         public IUserInterfaceManager Execute()
         {
             Blog blog = _blogRepository.Get(_blogId);
+            Console.WriteLine("---------------------------");
             Console.WriteLine($"{blog.Title} Details");
+            Console.WriteLine("---------------------------");
             Console.WriteLine(" 1) View");
             Console.WriteLine(" 2) View Blog Posts");
             Console.WriteLine(" 3) Add Tag");
@@ -48,7 +50,7 @@ namespace TabloidCLI.UserInterfaceManagers
                 case "0":
                     return _parentUI;
                 default:
-                    Console.WriteLine("Invalid Selection");
+                    Console.Clear(); Console.WriteLine("Invalid Selection");
                     return this;
             }
         }

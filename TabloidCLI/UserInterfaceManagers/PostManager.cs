@@ -122,7 +122,13 @@ namespace TabloidCLI.UserInterfaceManagers
             post.Url = Console.ReadLine();
 
             Console.WriteLine("Publication Date (MM/DD/YYYY)");
-            post.PublishDateTime = DateTime.Parse(Console.ReadLine());
+            bool canDate = DateTime.TryParse(Console.ReadLine(), out DateTime result);
+            while ( !canDate )
+            {
+                Console.WriteLine("Please enter a valid Publication Date (MM/DD/YYYY)");
+                canDate = DateTime.TryParse(Console.ReadLine(), out result);
+            };
+            post.PublishDateTime = result;
 
             Console.WriteLine("Who is the author of post: ");
             List<Author> authors = _authorRepository.GetAll();
@@ -186,8 +192,9 @@ namespace TabloidCLI.UserInterfaceManagers
             }
             Console.Write("> ");
 
-            int postToEditIndex = Int32.Parse(Console.ReadLine());
+            int postToEditIndex = Int32.Parse(Console.ReadLine() );
 
+           
             Post postToEdit = posts[postToEditIndex - 1];
 
             // Here menu to get updates
@@ -283,10 +290,19 @@ namespace TabloidCLI.UserInterfaceManagers
             }
             Console.Write("> ");
 
-            int postToDelete = Int32.Parse(Console.ReadLine());
+            string choice = Console.ReadLine();
+            try
+            {
+                int postToDelete = Int32.Parse(choice);
+                _postRepository.Delete(posts[postToDelete - 1].Id);
+            }
+            catch
+            {
+                Console.WriteLine("Invalid Selection");
+            }
 
 
-            _postRepository.Delete(posts[postToDelete - 1].Id);
+            
         }
     }
     

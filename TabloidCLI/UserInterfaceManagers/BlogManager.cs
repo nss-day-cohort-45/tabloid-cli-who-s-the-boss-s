@@ -75,7 +75,7 @@ namespace TabloidCLI.UserInterfaceManagers
         {
             if (prompt == null)
             {
-                prompt = "Please choose an Blog:";
+                prompt = "Please choose a Blog:";
             }
 
             Console.WriteLine(prompt);

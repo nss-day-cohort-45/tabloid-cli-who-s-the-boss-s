@@ -46,7 +46,6 @@ namespace TabloidCLI.UserInterfaceManagers
                     AddTag();
                     return this;
                 case "4":
-
                     RemoveTag();
                     return this;
                 case "0":

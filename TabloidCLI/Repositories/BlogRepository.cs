@@ -55,10 +55,9 @@ namespace TabloidCLI
                     cmd.CommandText = @"SELECT b.Id AS BlogId,
                                                b.Title,
                                                b.URL,
-                                               a.Bio,
                                                t.Id AS TagId,
                                                t.Name
-                                          FROM Author a 
+                                          FROM Blog b 
                                                LEFT JOIN BlogTag at on b.Id = bt.BlogId
                                                LEFT JOIN Tag t on t.Id = bt.TagId
                                          WHERE b.id = @id";
@@ -67,31 +66,33 @@ namespace TabloidCLI
 
                     Blog blog = null;
 
-                    SqlDataReader reader = cmd.ExecuteReader();
-                    while (reader.Read())
+                    using (SqlDataReader reader = cmd.ExecuteReader())
                     {
-                        if (blog == null)
+                        while (reader.Read())
                         {
-                            blog = new Blog()
+                            if (blog == null)
                             {
-                                Id = reader.GetInt32(reader.GetOrdinal("BlogId")),
-                                Title = reader.GetString(reader.GetOrdinal("Title")),
-                                Url = reader.GetString(reader.GetOrdinal("Url")),
-                               
-                            };
+                                blog = new Blog()
+                                {
+                                    Id = reader.GetInt32(reader.GetOrdinal("BlogId")),
+                                    Title = reader.GetString(reader.GetOrdinal("Title")),
+                                    Url = reader.GetString(reader.GetOrdinal("Url")),
+
+                                };
+                            }
+
+                            if (!reader.IsDBNull(reader.GetOrdinal("TagId")))
+                            {
+                                blog.Tags.Add(new Tag()
+                                {
+                                    Id = reader.GetInt32(reader.GetOrdinal("TagId")),
+                                    Name = reader.GetString(reader.GetOrdinal("Name")),
+                                });
+                            }
                         }
 
-                        if (!reader.IsDBNull(reader.GetOrdinal("TagId")))
-                        {
-                            blog.Tags.Add(new Tag()
-                            {
-                                Id = reader.GetInt32(reader.GetOrdinal("TagId")),
-                                Name = reader.GetString(reader.GetOrdinal("Name")),
-                            });
-                        }
+                        reader.Close();
                     }
-
-                    reader.Close();
 
                     return blog;
                 }
@@ -162,6 +163,24 @@ namespace TabloidCLI
                                                        VALUES (@blogId, @tagId)";
                     cmd.Parameters.AddWithValue("@blogId", blog.Id);
                     cmd.Parameters.AddWithValue("@tagId", tag.Id);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void DeleteTag(int blogId, int tagId)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"DELETE FROM BlogTAg 
+                                         WHERE BlogId = @blogid AND 
+                                               TagId = @tagId";
+                    cmd.Parameters.AddWithValue("@blogId", blogId);
+                    cmd.Parameters.AddWithValue("@tagId", tagId);
+
                     cmd.ExecuteNonQuery();
                 }
             }

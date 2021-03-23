@@ -1,14 +1,19 @@
 ﻿using System;
+using TabloidCLI.Models;
 
 namespace TabloidCLI.UserInterfaceManagers
 {
     public class TagManager : IUserInterfaceManager
     {
         private readonly IUserInterfaceManager _parentUI;
+        private TagRepository _tagRepository;
+        private string _connectionString;
 
         public TagManager(IUserInterfaceManager parentUI, string connectionString)
         {
             _parentUI = parentUI;
+            _tagRepository = new TagRepository(connectionString);
+            _connectionString = connectionString;
         }
 
         public IUserInterfaceManager Execute()
@@ -30,12 +35,14 @@ namespace TabloidCLI.UserInterfaceManagers
                 case "2":
                     Add();
                     return this;
+                    /*
                 case "3":
                     Edit();
                     return this;
                 case "4":
                     Remove();
                     return this;
+                    */
                 case "0":
                     return _parentUI;
                 default:
@@ -51,7 +58,14 @@ namespace TabloidCLI.UserInterfaceManagers
 
         private void Add()
         {
-            throw new NotImplementedException();
+            Console.WriteLine("New Tag");
+            Tag tag = new Tag();
+
+            Console.Write("Tag Name: ");
+            tag.Name = Console.ReadLine();
+
+
+            _tagRepository.Insert(tag);
         }
 
         private void Edit()

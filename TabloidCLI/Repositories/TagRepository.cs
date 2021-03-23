@@ -7,8 +7,10 @@ using TabloidCLI.UserInterfaceManagers;
 
 namespace TabloidCLI
 {
-    public class TagRepository : DatabaseConnector, IRepository<Tag>
+    public class TagRepository : DatabaseConnector
     {
+        private object reader;
+
         public TagRepository(string connectionString) : base(connectionString) { }
 
         public List<Tag> GetAll()
@@ -41,12 +43,54 @@ namespace TabloidCLI
 
         public Tag Get(int id)
         {
-            throw new NotImplementedException();
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"SELECT t.Id AS TagId,
+                                               t.Name
+                                          FROM Tag t;
+
+                    cmd.Parameters.AddWithValue("@idstring v = ", id);
+
+                    Tag tag = null;
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        if (tag == null)
+                        {
+                            tag = new Tag()
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("TagId")),
+                                Name = reader.GetString(reader.GetOrdinal("Name")),
+
+                            };
+                        }
+                    }
+
+                    reader.Close();
+
+                    return tag;
+                }
+            }
         }
 
         public void Insert(Tag tag)
         {
-            throw new NotImplementedException();
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"INSERT INTO Tag (Name )
+                                                           VALUES (@name)";
+                    cmd.Parameters.AddWithValue("@name", tag.Name);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }   
         }
 
         public void Update(Tag tag)
@@ -59,7 +103,9 @@ namespace TabloidCLI
             throw new NotImplementedException();
         }
 
-        public SearchResults<Author> SearchAuthors(string tagName)
+        /*
+
+        public SearchResults<Tag> SearchTags(string tagName)
         {
             using (SqlConnection conn = Connection)
             {
@@ -96,5 +142,7 @@ namespace TabloidCLI
                 }
             }
         }
+
+*/
     }
 }

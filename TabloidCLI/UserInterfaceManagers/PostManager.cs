@@ -13,16 +13,18 @@ namespace TabloidCLI.UserInterfaceManagers
         private TagRepository _tagRepository;
         private BlogRepository _blogRepository;
         private int _postId;
+        private string _connectionString;
+
 
 
         public PostManager(IUserInterfaceManager parentUI, string connectionString)
         {
             _parentUI = parentUI;
             _postRepository = new PostRepository(connectionString);
-            _tagRepository = new TagRepository(connectionString);
-            _authorRepository = new AuthorRepository(connectionString);
-            _blogRepository = new BlogRepository(connectionString);
-
+           // _tagRepository = new TagRepository(connectionString);
+         //   _authorRepository = new AuthorRepository(connectionString);
+            //_blogRepository = new BlogRepository(connectionString);
+            _connectionString = connectionString;
         }
 
         public IUserInterfaceManager Execute()
@@ -44,9 +46,15 @@ namespace TabloidCLI.UserInterfaceManagers
                     List();
                     return this;
                 case "2":
-                    Choose();
-
-                    return this;
+                    Post post = Choose();
+                    if (post == null)
+                    {
+                        return this;
+                    }
+                    else
+                    {
+                        return new PostDetailManager(this, _connectionString, post.Id);
+                    }
 
                 case "3":
                     Add();
@@ -75,11 +83,11 @@ namespace TabloidCLI.UserInterfaceManagers
             }
         }
 
-        private void Choose(string prompt = null)
+        private Post Choose(string prompt = null)
         {
             if (prompt == null)
             {
-                prompt = "Please choose a Post:";
+                prompt = "Please choose an Post:";
             }
 
             Console.WriteLine(prompt);
@@ -89,7 +97,7 @@ namespace TabloidCLI.UserInterfaceManagers
             for (int i = 0; i < posts.Count; i++)
             {
                 Post post = posts[i];
-                Console.WriteLine($"{ i + 1}) {post.Title}");
+                Console.WriteLine($" {i + 1}) {post.Title}");
             }
             Console.Write("> ");
 
@@ -97,15 +105,13 @@ namespace TabloidCLI.UserInterfaceManagers
             try
             {
                 int choice = int.Parse(input);
-                Post chosenPost = posts[choice - 1];
-                Console.WriteLine(chosenPost.Id);
+                return posts[choice - 1];
             }
             catch (Exception ex)
             {
                 Console.WriteLine("Invalid Selection");
-
+                return null;
             }
-
         }
 
 
@@ -122,7 +128,13 @@ namespace TabloidCLI.UserInterfaceManagers
             post.Url = Console.ReadLine();
 
             Console.WriteLine("Publication Date (MM/DD/YYYY)");
-            post.PublishDateTime = DateTime.Parse(Console.ReadLine());
+            bool canDate = DateTime.TryParse(Console.ReadLine(), out DateTime result);
+            while (!canDate)
+            {
+                Console.WriteLine("Please enter a valid Publication Date (MM/DD/YYYY)");
+                canDate = DateTime.TryParse(Console.ReadLine(), out result);
+            };
+            post.PublishDateTime = result;
 
             Console.WriteLine("Who is the author of post: ");
             List<Author> authors = _authorRepository.GetAll();
@@ -214,6 +226,7 @@ namespace TabloidCLI.UserInterfaceManagers
                 postToEdit.Url = newURL;
             };
 
+         
             Console.WriteLine("Publication Date (MM/DD/YYYY)");
             DateTime newDate = DateTime.Parse(Console.ReadLine());
             if (newDate == null)
@@ -224,7 +237,6 @@ namespace TabloidCLI.UserInterfaceManagers
             {
                 postToEdit.PublishDateTime = newDate;
             };
-
             Console.WriteLine("Who is the author of post: ");
             List<Author> authors = _authorRepository.GetAll();
             for (int i = 0; i < authors.Count; i++)
@@ -291,6 +303,7 @@ namespace TabloidCLI.UserInterfaceManagers
 
 
             _postRepository.Delete(posts[postToDelete - 1].Id);
+
         }
     }
     

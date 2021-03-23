@@ -8,7 +8,7 @@ namespace TabloidCLI.UserInterfaceManagers
 {
     class PostDetailManager : IUserInterfaceManager
     {
-    
+
         private IUserInterfaceManager _parentUI;
         private AuthorRepository _authorRepository;
         private PostRepository _postRepository;
@@ -42,8 +42,8 @@ namespace TabloidCLI.UserInterfaceManagers
                     View();
                     return this;
                 //case "2":
-                  //  NoteManagment();
-                    //return this;
+                //  NoteManagment();
+                //return this;
                 case "3":
                     AddTag();
                     return this;
@@ -65,13 +65,13 @@ namespace TabloidCLI.UserInterfaceManagers
             Console.WriteLine($"Title: {post.Title}");
             Console.WriteLine($"URL: {post.Url}");
             Console.WriteLine($"Publication Date: {post.PublishDateTime}");
-         
-       // private void NoteManagement()
-        //{
-          //  List<Post> posts = _postRepository.GetByAuthor(_authorId);
-           // foreach (Post post in posts)
+
+            // private void NoteManagement()
             //{
-              //  Console.WriteLine(post);
+            //  List<Post> posts = _postRepository.GetByAuthor(_authorId);
+            // foreach (Post post in posts)
+            //{
+            //  Console.WriteLine(post);
             //}
             //Console.WriteLine();
         }
@@ -102,31 +102,54 @@ namespace TabloidCLI.UserInterfaceManagers
                 Console.WriteLine("Invalid Selection. Won't add any tags.");
             }
         }
-
+        /*   private void ViewBlogPosts()
+        {
+            List<Post> posts = _postRepository.GetByAuthor(_authorId);
+            foreach (Post post in posts)
+            {
+                Console.WriteLine(post);
+            }
+            Console.WriteLine();
+        }
+         */
         private void RemoveTag()
         {
             Post post = _postRepository.Get(_postId);
 
-            Console.WriteLine($"Which tag would you like to remove from {post.Title}?");
-            List<Tag> tags = _tagRepository.GetAll();
 
-            for (int i = 0; i < tags.Count; i++)
+            if (post.Tags.Count == 0)
             {
-                Tag tag = tags[i];
-                Console.WriteLine($" {i + 1}) {tag.Name}");
-            }
-            Console.Write("> ");
 
-            string input = Console.ReadLine();
-            try
-            {
-                int choice = int.Parse(input);
-                Tag tag = tags[choice - 1];
-                _postRepository.DeleteTag(post.Id, tag.Id);
+
+                Console.Write("No current tags");
             }
-            catch (Exception ex)
+
+
+
+            else
             {
-                Console.WriteLine("Invalid Selection. Won't remove any tags.");
+
+                Console.WriteLine($"Which tag would you like to remove from {post.Title}?");
+
+                for (int i = 0; i < post.Tags.Count; i++)
+                {
+                    Tag tag = post.Tags[i];
+                    Console.WriteLine($" {i + 1}) {tag.Name}");
+                }
+
+                Console.Write("> ");
+
+                string input = Console.ReadLine();
+                try
+                {
+                    int choice = int.Parse(input);
+                    Tag tag = post.Tags[choice - 1];
+                    _postRepository.DeleteTag(post.Id, tag.Id);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Invalid Selection. Won't remove any tags.");
+                }
             }
         }
     }

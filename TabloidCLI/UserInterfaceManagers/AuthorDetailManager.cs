@@ -25,7 +25,9 @@ namespace TabloidCLI.UserInterfaceManagers
         public IUserInterfaceManager Execute()
         {
             Author author = _authorRepository.Get(_authorId);
+            Console.WriteLine("---------------------------");
             Console.WriteLine($"{author.FullName} Details");
+            Console.WriteLine("---------------------------");
             Console.WriteLine(" 1) View");
             Console.WriteLine(" 2) View Blog Posts");
             Console.WriteLine(" 3) Add Tag");
@@ -50,7 +52,7 @@ namespace TabloidCLI.UserInterfaceManagers
                     RemoveTag();
                     return this;
                 case "0":
-                    return _parentUI;
+                    Console.Clear();  return _parentUI;
                 default:
                     Console.WriteLine("Invalid Selection");
                     return this;

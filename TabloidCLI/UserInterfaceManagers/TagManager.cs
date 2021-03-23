@@ -18,7 +18,9 @@ namespace TabloidCLI.UserInterfaceManagers
 
         public IUserInterfaceManager Execute()
         {
+            Console.WriteLine("---------------------------");
             Console.WriteLine("Tag Menu");
+            Console.WriteLine("---------------------------");
             Console.WriteLine(" 1) List Tags");
             Console.WriteLine(" 2) Add Tag");
             Console.WriteLine(" 3) Edit Tag");
@@ -42,7 +44,7 @@ namespace TabloidCLI.UserInterfaceManagers
                     Remove();
                     return this;
                 case "0":
-                    return _parentUI;
+                    Console.Clear(); return _parentUI;
                 default:
                     Console.WriteLine("Invalid Selection");
                     return this;

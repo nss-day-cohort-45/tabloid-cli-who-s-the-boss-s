@@ -36,6 +36,7 @@ namespace TabloidCLI.UserInterfaceManagers
                 ConsoleColor colorChoice = colors[choice];
                 Console.BackgroundColor = colorChoice;
                 // Do we return something, or just set it here?
+                Console.Clear();
                 return new MainMenuManager();
             }
             catch (Exception ex)

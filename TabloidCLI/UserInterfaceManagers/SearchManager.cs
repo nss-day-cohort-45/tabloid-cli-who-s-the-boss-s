@@ -16,7 +16,9 @@ namespace TabloidCLI.UserInterfaceManagers
 
         public IUserInterfaceManager Execute()
         {
+            Console.WriteLine("---------------------------");
             Console.WriteLine("Search Menu");
+            Console.WriteLine("---------------------------");
             Console.WriteLine(" 1) Search Blogs");
             Console.WriteLine(" 2) Search Authors");
             Console.WriteLine(" 3) Search Posts");
@@ -37,7 +39,7 @@ namespace TabloidCLI.UserInterfaceManagers
                 case "4":
                     return this;
                 case "0":
-                    return _parentUI;
+                    Console.Clear(); return _parentUI;
                 default:
                     Console.WriteLine("Invalid Selection");
                     return this;

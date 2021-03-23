@@ -129,7 +129,7 @@ namespace TabloidCLI.UserInterfaceManagers
 
             Console.WriteLine("Publication Date (MM/DD/YYYY)");
             bool canDate = DateTime.TryParse(Console.ReadLine(), out DateTime result);
-            while (!canDate)
+            while ( !canDate )
             {
                 Console.WriteLine("Please enter a valid Publication Date (MM/DD/YYYY)");
                 canDate = DateTime.TryParse(Console.ReadLine(), out result);
@@ -198,8 +198,9 @@ namespace TabloidCLI.UserInterfaceManagers
             }
             Console.Write("> ");
 
-            int postToEditIndex = Int32.Parse(Console.ReadLine());
+            int postToEditIndex = Int32.Parse(Console.ReadLine() );
 
+           
             Post postToEdit = posts[postToEditIndex - 1];
 
             // Here menu to get updates
@@ -228,14 +229,10 @@ namespace TabloidCLI.UserInterfaceManagers
 
          
             Console.WriteLine("Publication Date (MM/DD/YYYY)");
-            DateTime newDate = DateTime.Parse(Console.ReadLine());
-            if (newDate == null)
+            bool canDate = DateTime.TryParse(Console.ReadLine(), out DateTime result);
+            if (canDate)
             {
-                
-            }
-            else
-            {
-                postToEdit.PublishDateTime = newDate;
+                postToEdit.PublishDateTime = result;
             };
             Console.WriteLine("Who is the author of post: ");
             List<Author> authors = _authorRepository.GetAll();
@@ -299,11 +296,19 @@ namespace TabloidCLI.UserInterfaceManagers
             }
             Console.Write("> ");
 
-            int postToDelete = Int32.Parse(Console.ReadLine());
+            string choice = Console.ReadLine();
+            try
+            {
+                int postToDelete = Int32.Parse(choice);
+                _postRepository.Delete(posts[postToDelete - 1].Id);
+            }
+            catch
+            {
+                Console.WriteLine("Invalid Selection");
+            }
 
 
-            _postRepository.Delete(posts[postToDelete - 1].Id);
-
+            
         }
     }
     

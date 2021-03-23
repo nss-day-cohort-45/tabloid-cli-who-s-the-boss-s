@@ -23,7 +23,7 @@ namespace TabloidCLI.UserInterfaceManagers
 
             for (int i = 0; i < colors.Length; i++)
             {
-                if (colors[0] == currentForeground) continue;
+                if (colors[i] == currentForeground) continue;
 
                 Console.WriteLine($"{i + 1} {colors[i]}");
             }

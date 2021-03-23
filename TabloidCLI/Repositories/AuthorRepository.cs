@@ -116,6 +116,7 @@ namespace TabloidCLI
             }
         }
 
+
         public void Update(Author author)
         {
             using (SqlConnection conn = Connection)

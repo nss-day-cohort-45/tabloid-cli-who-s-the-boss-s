@@ -41,11 +41,9 @@ namespace TabloidCLI.UserInterfaceManagers
                 case "3":
                     Edit();
                     return this;
-                    /*
                 case "4":
                     Remove();
                     return this;
-                    */
                 case "0":
                     Console.Clear(); return _parentUI;
                 default:
@@ -112,9 +110,57 @@ namespace TabloidCLI.UserInterfaceManagers
             _tagRepository.Update(tagToEdit);
         }
 
+        private Tag Choose(string prompt = null)
+        {
+            if (prompt == null)
+            {
+                prompt = "Please choose a tag:";
+            }
+
+            Console.WriteLine(prompt);
+
+            List<Tag> tags = _tagRepository.GetAll();
+
+            for (int i = 0; i < tags.Count; i++)
+            {
+                Tag tag = tags[i];
+                Console.WriteLine($" {i + 1}) {tag.Name}");
+            }
+            Console.Write("> ");
+
+            string input = Console.ReadLine();
+            try
+            {
+                int choice = int.Parse(input);
+                return tags[choice - 1];
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Invalid Selection");
+                return null;
+            }
+        }
+
         private void Remove()
         {
-            throw new NotImplementedException();
+            Tag tagToDelete = Choose("Which tag would you like to remove?");
+            if (tagToDelete != null)
+            {
+                try
+                {
+                    // Here we try to delete a tag using the Delete method found in TagRepository.cs
+                    // If there are posts in the database that reference the ID of the tag we are trying to delete, 
+                    // a `Microsoft.Data.SqlClient.SqlException` error is thrown
+                    _tagRepository.Delete(tagToDelete.Id);
+                }
+                catch (Microsoft.Data.SqlClient.SqlException)
+                {
+                    // If the error would be thrown, the try/catch statement stops the code above from executing
+                    // and instead executes this code
+                    Console.WriteLine("Cannot delete the selected tag while posts exist");
+                }
+
+            }
         }
     }
 }

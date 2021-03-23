@@ -48,7 +48,7 @@ namespace TabloidCLI.UserInterfaceManagers
                     return this;
             }
         }
-        /*
+        
         private void SearchAuthors()
         {
             Console.Write("Tag> ");
@@ -65,7 +65,7 @@ namespace TabloidCLI.UserInterfaceManagers
                 results.Display();
             }
         }
-        */
+        
         
     }
 }

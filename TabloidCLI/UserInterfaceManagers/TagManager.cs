@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using TabloidCLI.Models;
+
 
 namespace TabloidCLI.UserInterfaceManagers
 {
@@ -7,13 +9,11 @@ namespace TabloidCLI.UserInterfaceManagers
     {
         private readonly IUserInterfaceManager _parentUI;
         private TagRepository _tagRepository;
-        private string _connectionString;
 
         public TagManager(IUserInterfaceManager parentUI, string connectionString)
         {
             _parentUI = parentUI;
             _tagRepository = new TagRepository(connectionString);
-            _connectionString = connectionString;
         }
 
         public IUserInterfaceManager Execute()
@@ -53,7 +53,11 @@ namespace TabloidCLI.UserInterfaceManagers
 
         private void List()
         {
-            throw new NotImplementedException();
+            List<Tag> tags = _tagRepository.GetAll();
+            foreach ( Tag tag in tags)
+            {
+                Console.WriteLine($"Tag title: {tag.Name}");
+            }
         }
 
         private void Add()
@@ -70,7 +74,39 @@ namespace TabloidCLI.UserInterfaceManagers
 
         private void Edit()
         {
-            throw new NotImplementedException();
+            Console.WriteLine("Which tag would you like to edit? ");
+            List<Tag> tags = _tagRepository.GetAll();
+            for (int i = 0; i < tags.Count; i++)
+            {
+                Tag tag= tags[i];
+                Console.WriteLine($"{i + 1}) {tag.Name} ");
+            }
+            Console.Write("> ");
+
+            bool indexCanParse = Int32.TryParse(Console.ReadLine(), out int indexToEdit);
+            while(!indexCanParse)
+            {
+                Console.WriteLine("That was an invalid selection. Try again.");
+                Console.Write("> ");
+
+                indexCanParse = Int32.TryParse(Console.ReadLine(), out  indexToEdit);
+
+            }
+
+            Tag tagToEdit = tags[indexToEdit - 1];
+
+            Console.WriteLine("New tag name:");
+            string newName = Console.ReadLine();
+            if (newName == "" || newName == null)
+            {
+
+            }
+            else
+            {
+                tagToEdit.Name = newName;
+            };
+
+            _tagRepository.Update(tagToEdit);
         }
 
         private void Remove()

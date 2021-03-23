@@ -29,9 +29,14 @@ namespace TabloidCLI.UserInterfaceManagers
             {
                 case "1":
                     return this;
+                    
                 case "2":
+                    /*
                     SearchAuthors();
                     return this;
+                    */
+                    throw new Exception();
+                    
                 case "3":
                     return this;
                 case "4":
@@ -43,7 +48,7 @@ namespace TabloidCLI.UserInterfaceManagers
                     return this;
             }
         }
-
+        /*
         private void SearchAuthors()
         {
             Console.Write("Tag> ");
@@ -60,5 +65,7 @@ namespace TabloidCLI.UserInterfaceManagers
                 results.Display();
             }
         }
+        */
+        
     }
 }

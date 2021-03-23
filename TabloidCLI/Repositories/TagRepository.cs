@@ -7,9 +7,8 @@ using TabloidCLI.UserInterfaceManagers;
 
 namespace TabloidCLI
 {
-    public class TagRepository : DatabaseConnector
+    public class TagRepository : DatabaseConnector, IRepository<Tag>
     {
-        private object reader;
 
         public TagRepository(string connectionString) : base(connectionString) { }
 
@@ -50,9 +49,12 @@ namespace TabloidCLI
                 {
                     cmd.CommandText = @"SELECT t.Id AS TagId,
                                                t.Name
-                                          FROM Tag t;
+                                          FROM Tag t
+                                               LEFT JOIN BlogTag at on b.Id = bt.BlogId
+                                               LEFT JOIN Tag t on t.Id = bt.TagId
+                                         WHERE b.id = @id";
 
-                    cmd.Parameters.AddWithValue("@idstring v = ", id);
+                    cmd.Parameters.AddWithValue("@id", id);
 
                     Tag tag = null;
 
@@ -103,8 +105,8 @@ namespace TabloidCLI
             throw new NotImplementedException();
         }
 
+        
         /*
-
         public SearchResults<Tag> SearchTags(string tagName)
         {
             using (SqlConnection conn = Connection)
@@ -143,6 +145,7 @@ namespace TabloidCLI
             }
         }
 
-*/
+        */
+
     }
 }

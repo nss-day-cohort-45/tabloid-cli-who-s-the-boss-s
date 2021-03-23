@@ -35,10 +35,11 @@ namespace TabloidCLI.UserInterfaceManagers
                 case "2":
                     Add();
                     return this;
-                    /*
+                  
                 case "3":
                     Edit();
                     return this;
+                    /*
                 case "4":
                     Remove();
                     return this;
